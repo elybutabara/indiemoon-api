@@ -1,11 +1,13 @@
 <?php
+
 namespace App\Domain\Spine;
 
-final class SpineCalculator {
-
+final class SpineCalculator
+{
     public function widthMm(int $pageCount, float $paperCaliperMm): float
     {
-        return round(($pageCount * $paperCaliperMm) / 2, 2);
+        $spineWidth = ($pageCount * $paperCaliperMm) / 2;
+
+        return round($spineWidth, 2);
     }
-    
 }

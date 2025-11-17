@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SpineController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,3 +24,5 @@ Route::get('/test-upload', function () {
         ], 500);
     }
 });
+
+Route::post('/spine/calculate', [SpineController::class, 'calculate']);
