@@ -8,6 +8,6 @@ final class SpineCalculator
     {
         $spineWidth = ($pageCount * $paperCaliperMm) / 2;
 
-        return round($spineWidth, 2);
+        return round($spineWidth, 1, PHP_ROUND_HALF_UP);
     }
 }

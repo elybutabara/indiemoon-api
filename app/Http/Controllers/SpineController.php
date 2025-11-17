@@ -3,17 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Domain\Spine\SpineCalculator;
+use App\Http\Requests\SpineCalculateRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class SpineController extends Controller
 {
-    public function calculate(Request $request, SpineCalculator $calculator): JsonResponse
+    public function calculate(SpineCalculateRequest $request, SpineCalculator $calculator): JsonResponse
     {
-        $validated = $request->validate([
-            'page_count' => ['required', 'integer', 'min:1'],
-            'paper_caliper_mm' => ['required', 'numeric', 'gt:0'],
-        ]);
+        $validated = $request->validated();
 
         $width = $calculator->widthMm(
             (int) $validated['page_count'],
