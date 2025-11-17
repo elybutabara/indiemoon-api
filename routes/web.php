@@ -2,10 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\SpineController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/spine/calculate', [SpineController::class, 'calculate']);
 
 Route::get('/test-upload', function () {    
 
