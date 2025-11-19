@@ -31,4 +31,10 @@ return [
         ],
     ],
 
+    'illustration_broker' => [
+        'description' => 'Connects to Midjourney/Flux/SDXL for image generation.',
+        'base_url' => env('ILLUSTRATION_BROKER_BASE_URL'),
+        'api_key' => env('ILLUSTRATION_BROKER_API_KEY'),
+    ],
+
 ];
