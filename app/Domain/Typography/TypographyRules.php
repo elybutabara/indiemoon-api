@@ -26,9 +26,16 @@ class TypographyRules
 
     private function protectShortWordOrphans(string $paragraph): string
     {
-        $pattern = '/(?<!\S)([\p{L}]{1,3})\s+(?=\p{L})/u';
+        if (!$this->containsShortWord($paragraph)) {
+            return $paragraph;
+        }
 
-        return preg_replace($pattern, '$1'.self::NBSP, $paragraph) ?? $paragraph;
+        return preg_replace('/\s+(?=\p{L})/u', self::NBSP, $paragraph) ?? $paragraph;
+    }
+
+    private function containsShortWord(string $paragraph): bool
+    {
+        return (bool) preg_match('/(?<!\S)[\p{L}]{1,3}(?=\s|$)/u', $paragraph);
     }
 
     private function protectWidow(string $paragraph): string
