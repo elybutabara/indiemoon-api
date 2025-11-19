@@ -26,7 +26,7 @@ class TypographyRules
 
     private function protectShortWordOrphans(string $paragraph): string
     {
-        $pattern = '/(?<=^|\s)([\p{L}]{1,3})\s+(?=\p{L})/u';
+        $pattern = '/(?<!\S)([\p{L}]{1,3})\s+(?=\p{L})/u';
 
         return preg_replace($pattern, '$1'.self::NBSP, $paragraph) ?? $paragraph;
     }
