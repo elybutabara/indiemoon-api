@@ -12,7 +12,7 @@ return [
         // Ghostscript binary for PDF/X conversion
         'ghostscript_binary' => env('GHOSTSCRIPT_BINARY', 'gs'),
 
-        // Disk where final PDFs are stored (S3/Supabase/etc)
+        // Disk where final PDFs are stored
         'disk' => env('EXPORT_DISK', 's3'),
 
         // Folder inside the disk
