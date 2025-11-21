@@ -25,21 +25,17 @@ class PdfEngineS3Test extends TestCase
 
         Storage::fake('s3');
 
-        $engine = Mockery::mock(PdfEngine::class)
-            ->makePartial()
-            ->shouldAllowMockingProtectedMethods();
-
-        $engine->shouldReceive('runPagedJs')
-            ->once()
-            ->andReturnUsing(function (string $htmlPath, string $outputPdfPath) {
+        $engine = new class extends PdfEngine {
+            protected function runPagedJs(string $htmlPath, string $outputPdfPath, array $options = []): void
+            {
                 file_put_contents($outputPdfPath, 'pdf');
-            });
+            }
 
-        $engine->shouldReceive('runGhostscriptPdfx')
-            ->once()
-            ->andReturnUsing(function (string $inputPdf, string $outputPdfx) {
+            protected function runGhostscriptPdfx(string $inputPdf, string $outputPdfx): void
+            {
                 file_put_contents($outputPdfx, 'pdfx');
-            });
+            }
+        };
 
         $storagePath = $engine->generateFromHtml('<html></html>', 'My Document.pdf');
 
