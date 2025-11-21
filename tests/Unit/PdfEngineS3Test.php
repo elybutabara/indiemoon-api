@@ -26,6 +26,11 @@ class PdfEngineS3Test extends TestCase
         Storage::fake('s3');
 
         $engine = new class extends PdfEngine {
+            public function __construct()
+            {
+                parent::__construct();
+            }
+
             protected function runPagedJs(string $htmlPath, string $outputPdfPath, array $options = []): void
             {
                 file_put_contents($outputPdfPath, 'pdf');
