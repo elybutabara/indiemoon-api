@@ -22,4 +22,22 @@ return [
         'tmp_dir' => storage_path('app/exports/tmp'),
     ],
 
+    'epub' => [
+        // Disk where final EPUBs are stored
+        'disk' => env('EXPORT_DISK', 's3'),
+
+        // Folder inside the disk
+        'path_prefix' => 'exports/epub',
+
+        // Temp directory (local)
+        'tmp_dir' => storage_path('app/exports/tmp'),
+
+        // Binary used to run epubcheck (defaults to `npx`)
+        'epubcheck_binary' => env('EPUBCHECK_BINARY', 'npx'),
+
+        // Arguments passed to the epubcheck binary before the file path
+        // Default: ["epubcheck"] => `npx epubcheck <file>`
+        'epubcheck_args' => ['epubcheck'],
+    ],
+
 ];
