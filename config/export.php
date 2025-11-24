@@ -40,4 +40,15 @@ return [
         'epubcheck_args' => ['epubcheck'],
     ],
 
+    'idml' => [
+        // Disk where final IDML files are stored
+        'disk' => env('EXPORT_DISK', 's3'),
+
+        // Folder inside the disk
+        'path_prefix' => 'exports/idml',
+
+        // Temp directory (local)
+        'tmp_dir' => storage_path('app/exports/tmp'),
+    ],
+
 ];
