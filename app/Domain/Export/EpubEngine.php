@@ -68,6 +68,10 @@ class EpubEngine
 
         $meta = array_merge($metaDefaults, $metadata);
 
+        if (! is_dir($workDir)) {
+            mkdir($workDir, 0775, true);
+        }
+
         $metaInf = $workDir . DIRECTORY_SEPARATOR . 'META-INF';
         $oebps   = $workDir . DIRECTORY_SEPARATOR . 'OEBPS';
 
@@ -94,6 +98,12 @@ class EpubEngine
     {
         $zip = new ZipArchive();
 
+        $epubDir = dirname($epubPath);
+
+        if (! is_dir($epubDir)) {
+            mkdir($epubDir, 0775, true);
+        }
+
         if ($zip->open($epubPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
             throw new EpubGenerationException('Unable to create EPUB archive.');
         }
@@ -115,10 +125,20 @@ class EpubEngine
                 continue;
             }
 
-            $zip->addFile($filePath, $localPath);
+            if ($file->isDir()) {
+                $zip->addEmptyDir($localPath);
+
+                continue;
+            }
+
+            if ($zip->addFile($filePath, $localPath) !== true) {
+                throw new EpubGenerationException(sprintf('Unable to add %s to EPUB archive.', $localPath));
+            }
         }
 
-        $zip->close();
+        if ($zip->close() !== true) {
+            throw new EpubGenerationException('Unable to finalize EPUB archive.');
+        }
     }
 
     protected function runEpubcheck(string $epubPath): void
