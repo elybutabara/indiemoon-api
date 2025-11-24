@@ -120,6 +120,7 @@ class EpubEngine
         foreach ($iterator as $file) {
             $filePath = $file->getRealPath();
             $localPath = ltrim(str_replace($workDir, '', $filePath), DIRECTORY_SEPARATOR);
+            $localPath = str_replace('\\', '/', $localPath);
 
             if ($localPath === 'mimetype') {
                 continue;
