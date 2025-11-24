@@ -109,8 +109,8 @@ class EpubEngine
         }
 
         $basePath = rtrim(realpath($workDir) ?: $workDir, DIRECTORY_SEPARATOR);
-
         $mimetypePath = $basePath . DIRECTORY_SEPARATOR . 'mimetype';
+
         $zip->addFile($mimetypePath, 'mimetype');
         $zip->setCompressionName('mimetype', ZipArchive::CM_STORE);
 
@@ -127,14 +127,16 @@ class EpubEngine
             }
 
             $localPath = ltrim(str_replace($basePath, '', $filePath), DIRECTORY_SEPARATOR);
-            $localPath = str_replace('\', '/', $localPath);
+            $localPath = str_replace('\\', '/', $localPath);
 
             if ($localPath === 'mimetype') {
                 continue;
             }
 
             if ($file->isDir()) {
-                $zip->addEmptyDir($localPath);
+                if ($zip->addEmptyDir($localPath) !== true) {
+                    throw new EpubGenerationException(sprintf('Unable to add directory %s to EPUB archive.', $localPath));
+                }
 
                 continue;
             }
