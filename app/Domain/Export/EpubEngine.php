@@ -108,7 +108,9 @@ class EpubEngine
             throw new EpubGenerationException('Unable to create EPUB archive.');
         }
 
-        $mimetypePath = $workDir . DIRECTORY_SEPARATOR . 'mimetype';
+        $basePath = rtrim(realpath($workDir) ?: $workDir, DIRECTORY_SEPARATOR);
+
+        $mimetypePath = $basePath . DIRECTORY_SEPARATOR . 'mimetype';
         $zip->addFile($mimetypePath, 'mimetype');
         $zip->setCompressionName('mimetype', ZipArchive::CM_STORE);
 
@@ -119,7 +121,12 @@ class EpubEngine
 
         foreach ($iterator as $file) {
             $filePath = $file->getRealPath();
-            $localPath = ltrim(str_replace($workDir, '', $filePath), DIRECTORY_SEPARATOR);
+
+            if ($filePath === false) {
+                throw new EpubGenerationException('Unable to read file path while creating EPUB archive.');
+            }
+
+            $localPath = ltrim(str_replace($basePath, '', $filePath), DIRECTORY_SEPARATOR);
             $localPath = str_replace('\', '/', $localPath);
 
             if ($localPath === 'mimetype') {
